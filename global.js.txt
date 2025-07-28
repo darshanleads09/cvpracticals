@@ -1,0 +1,68 @@
+﻿// ✅ global.js: Common reusable functions for AJAX, DataTables, and Modal handling
+const AppUtils = (() => {
+
+    // Generic AJAX Request
+    const ajaxRequest = (url, method = 'GET', data = {}, dataType = 'json') => {
+        return $.ajax({
+            url,
+            type: method,
+            data,
+            dataType
+        });
+    };
+
+    // Load Partial View into Modal
+    const loadModal = async (url, modalSelector = '#crudModal', title = 'Manage Record') => {
+        try {
+            const html = await ajaxRequest(url);
+            $(`${modalSelector} .modal-title`).text(title);
+            $(`${modalSelector} .modal-body`).html(html);
+            $(modalSelector).modal('show');
+        } catch (error) {
+            console.error('Error loading modal:', error);
+            alert('Failed to load modal content.');
+        }
+    };
+
+    // Initialize DataTable with Server-Side Processing
+    const initDataTable = (selector, ajaxUrl, columns) => {
+        return $(selector).DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: ajaxUrl,
+                type: 'POST',
+                data: (d) => {
+                    d.pageIndex = (d.start / d.length) + 1;
+                    d.pageSize = d.length;
+                    d.sortColumn = d.columns[d.order[0].column].data;
+                    d.sortDirection = d.order[0].dir;
+                    d.search = d.search.value;
+                },
+                dataSrc: 'data'
+            },
+            columns,
+            paging: true,
+            searching: true,
+            ordering: true,
+            lengthMenu: [10, 25, 50, 100],
+            language: {
+                emptyTable: "No data available"
+            }
+        });
+    };
+
+    // Confirmation Dialog (Bootstrap 4)
+    const confirmAction = (message = 'Are you sure?', onConfirm) => {
+        if (confirm(message)) {
+            onConfirm();
+        }
+    };
+
+    return {
+        ajaxRequest,
+        loadModal,
+        initDataTable,
+        confirmAction
+    };
+})();

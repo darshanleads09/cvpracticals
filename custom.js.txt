@@ -1,0 +1,131 @@
+﻿// ✅ custom.js: Handles Risk Management CRUD for all 4 tabs using AppUtils
+$(document).ready(() => {
+    // Define DataTables for each tab
+    const riskThemeTable = AppUtils.initDataTable('#riskThemeTable', '/RiskTheme/GetData', [
+        { data: 'riskThemeId', title: 'ID' },
+        { data: 'riskThemeCode', title: 'Code' },
+        { data: 'riskThemeName', title: 'Name' },
+        { data: 'isActive', title: 'Active', render: (d) => d ? 'Yes' : 'No' },
+        {
+            data: 'riskThemeId', title: 'Actions', orderable: false, render: (id) => {
+                return `
+                    <button class="btn btn-sm btn-info" onclick="editRecord('RiskTheme', ${id})">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteRecord('RiskTheme', ${id})">Delete</button>`;
+            }
+        }
+    ]);
+
+    const level1Table = AppUtils.initDataTable('#level1Table', '/RiskSubThemeLevel1/GetData', [
+        { data: 'riskSubThemeLevel1Id', title: 'ID' },
+        { data: 'riskSubThemeLevel1Code', title: 'Code' },
+        { data: 'riskSubThemeLevel1Name', title: 'Name' },
+        { data: 'isActive', title: 'Active', render: (d) => d ? 'Yes' : 'No' },
+        {
+            data: 'riskSubThemeLevel1Id', title: 'Actions', orderable: false, render: (id) => {
+                return `
+                    <button class="btn btn-sm btn-info" onclick="editRecord('Level1', ${id})">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteRecord('Level1', ${id})">Delete</button>`;
+            }
+        }
+    ]);
+
+    const level2Table = AppUtils.initDataTable('#level2Table', '/RiskSubThemeLevel2/GetData', [
+        { data: 'riskSubThemeLevel2Id', title: 'ID' },
+        { data: 'riskSubThemeLevel2Code', title: 'Code' },
+        { data: 'riskSubThemeLevel2Name', title: 'Name' },
+        { data: 'isActive', title: 'Active', render: (d) => d ? 'Yes' : 'No' },
+        {
+            data: 'riskSubThemeLevel2Id', title: 'Actions', orderable: false, render: (id) => {
+                return `
+                    <button class="btn btn-sm btn-info" onclick="editRecord('Level2', ${id})">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteRecord('Level2', ${id})">Delete</button>`;
+            }
+        }
+    ]);
+
+    const level3Table = AppUtils.initDataTable('#level3Table', '/RiskSubThemeLevel3/GetData', [
+        { data: 'riskSubThemeLevel3Id', title: 'ID' },
+        { data: 'riskSubThemeLevel3Code', title: 'Code' },
+        { data: 'riskSubThemeLevel3Name', title: 'Name' },
+        { data: 'isActive', title: 'Active', render: (d) => d ? 'Yes' : 'No' },
+        {
+            data: 'riskSubThemeLevel3Id', title: 'Actions', orderable: false, render: (id) => {
+                return `
+                    <button class="btn btn-sm btn-info" onclick="editRecord('Level3', ${id})">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteRecord('Level3', ${id})">Delete</button>`;
+            }
+        }
+    ]);
+
+    // Expose global functions for modal actions
+    window.openModal = async (entity, url) => {
+        try {
+            const html = await AppUtils.ajaxRequest(url);
+            $('#modalBody').html(html);
+
+            // Dynamically set form action for CreateOrUpdate
+            $('#crudModal form').attr('action', url.replace('Create', 'CreateOrUpdate'));
+
+            $('#modalTitle').text(`Add ${entity}`);
+            $('#crudModal').modal('show');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    window.editRecord = async (entity, id) => {
+        let url = '';
+        switch (entity) {
+            case 'RiskTheme': url = `/RiskTheme/Edit/${id}`; break;
+            case 'Level1': url = `/RiskSubThemeLevel1/Edit/${id}`; break;
+            case 'Level2': url = `/RiskSubThemeLevel2/Edit/${id}`; break;
+            case 'Level3': url = `/RiskSubThemeLevel3/Edit/${id}`; break;
+        }
+
+        try {
+            const html = await AppUtils.ajaxRequest(url);
+            $('#modalBody').html(html);
+            $('#crudModal form').attr('action', url.replace('Edit', 'CreateOrUpdate'));
+            $('#modalTitle').text(`Edit ${entity}`);
+            $('#crudModal').modal('show');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    window.saveRecord = async () => {
+        const form = $('#crudModal form');
+        const url = form.attr('action') || form.data('action'); // Action attribute or custom data-action
+        const formData = form.serialize();
+
+        try {
+            await AppUtils.ajaxRequest(url, 'POST', formData);
+            $('#crudModal').modal('hide');
+            reloadAllTables();
+        } catch (error) {
+            alert('Failed to save record.');
+        }
+    };
+
+    // Reload all DataTables
+    function reloadAllTables() {
+        $('#riskThemeTable').DataTable().ajax.reload(null, false);
+        $('#level1Table').DataTable().ajax.reload(null, false);
+        $('#level2Table').DataTable().ajax.reload(null, false);
+        $('#level3Table').DataTable().ajax.reload(null, false);
+    }
+
+    window.deleteRecord = (entity, id) => {
+        let url = '';
+        switch (entity) {
+            case 'RiskTheme': url = `/RiskTheme/Delete/${id}`; break;
+            case 'Level1': url = `/RiskSubThemeLevel1/Delete/${id}`; break;
+            case 'Level2': url = `/RiskSubThemeLevel2/Delete/${id}`; break;
+            case 'Level3': url = `/RiskSubThemeLevel3/Delete/${id}`; break;
+        }
+        AppUtils.confirmAction('Are you sure you want to delete this record?', async () => {
+            await AppUtils.ajaxRequest(url, 'POST');
+            reloadAllTables();
+        });
+    };
+});

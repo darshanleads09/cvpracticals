@@ -1,0 +1,29 @@
+﻿@{
+    Layout = null;
+}
+
+@model WebApplicationTest.Models.RiskTheme
+
+@removeTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.OptionTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<form id="riskThemeForm">
+    <input type="hidden" id="RiskThemeId" value="@Model?.RiskThemeId" />
+
+    <div class="form-group">
+        <label>Code</label>
+        <input type="text" class="form-control" id="RiskThemeCode" value="@Model?.RiskThemeCode" />
+    </div>
+
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" id="RiskThemeName" value="@Model?.RiskThemeName" />
+    </div>
+
+    <div class="form-group">
+        <label>Active</label>
+        <select id="IsActive" class="form-control" name="IsActive">
+            <option value="true" @(Model?.IsActive == true ? "selected=\"selected\"" : "")>Yes</option>
+            <option value="false" @(Model?.IsActive == false ? "selected=\"selected\"" : "")>No</option>
+        </select>
+    </div>
+</form>

@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+
+@model WebApplicationTest.Models.RiskSubThemeLevel3
+@removeTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.OptionTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<form id="level3Form">
+    <input type="hidden" id="RiskSubThemeLevel3Id" value="@Model?.RiskSubThemeLevel3Id" />
+
+    <div class="form-group">
+        <label>Risk Theme</label>
+        <select class="form-control" id="RiskThemeId">
+            <option value="">-- Select Risk Theme --</option>
+            @if (ViewBag.RiskTheme != null)
+            {
+                foreach (var theme in ViewBag.RiskTheme)
+                {
+                    <option value="@theme.RiskThemeId" @(Model?.RiskThemeId == theme.RiskThemeId ? "selected" : "")>
+                        @theme.RiskThemeName
+                    </option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Level 2</label>
+        <select class="form-control" id="RiskSubThemeLevel2Id">
+            <option value="">-- Select Level 2 --</option>
+            @if (ViewBag.Level2s != null)
+            {
+                foreach (var level2 in ViewBag.Level2s)
+                {
+                    <option value="@level2.RiskSubThemeLevel2Id" @(Model?.RiskSubThemeLevel2Id == level2.RiskSubThemeLevel2Id ? "selected" : "")>
+                        @level2.RiskSubThemeLevel2Name
+                    </option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Code</label>
+        <input type="text" class="form-control" id="RiskSubThemeLevel3Code" value="@Model?.RiskSubThemeLevel3Code" />
+    </div>
+
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" id="RiskSubThemeLevel3Name" value="@Model?.RiskSubThemeLevel3Name" />
+    </div>
+
+    <div class="form-group">
+        <label>Active</label>
+        <select id="IsActive" class="form-control">
+            <option value="true" @(Model?.IsActive == true ? "selected" : "")>Yes</option>
+            <option value="false" @(Model?.IsActive == false ? "selected" : "")>No</option>
+        </select>
+    </div>
+</form>
