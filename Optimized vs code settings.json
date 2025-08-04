@@ -47,17 +47,6 @@
     "omnisharp.useModernNet": true,
     "omnisharp.enableRoslynAnalyzers": false,
     "omnisharp.enableEditorConfigSupport": false,
-    "omnisharp.enableImportCompletion": false
-}
-    // Reduce Unnecessary UI Load
-    "workbench.startupEditor": "none",
-    "explorer.autoReveal": false,
-
-    // C# & .NET Related Tweaks
-    "dotnet.server.useOmnisharp": true,
-    "omnisharp.useModernNet": true,
-    "omnisharp.enableRoslynAnalyzers": false,
-    "omnisharp.enableEditorConfigSupport": false,
     "omnisharp.enableImportCompletion": false,
 
     // Disable heavy features when not needed
