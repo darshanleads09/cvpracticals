@@ -1,0 +1,52 @@
+{
+    // Performance
+    "editor.smoothScrolling": false,
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "none",
+    "editor.largeFileOptimizations": true,
+    "editor.wordWrap": "on",
+
+    // GitHub Copilot Core
+    "github.copilot.enable": true,
+    "github.copilot.editor.enableAutoCompletions": true,
+    "github.copilot.inlineSuggest.enable": true,
+    "github.copilot.advanced": {
+        "experimentalCompletionCache": true,  // Cache completions for speed
+        "enableFastAutoTrigger": true         // Reduces latency for inline suggestions
+    },
+
+    // Copilot Chat Settings
+    "github.copilot.chat.enable": true,
+    "github.copilot.chat.agentMode": "inline",  // Inline mode is lighter than full agent mode
+    "github.copilot.chat.experimental.autoAgent": false,
+
+    // VS Code Performance Tweaks
+    "files.autoSave": "onFocusChange",
+    "files.watcherExclude": {
+        "**/node_modules/**": true,
+        "**/target/**": true,
+        "**/.git/**": true
+    },
+    "search.followSymlinks": false,
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+
+    // Extensions Optimization
+    "extensions.autoUpdate": true,
+    "extensions.autoCheckUpdates": true,
+
+    // Reduce Unnecessary UI Load
+    "workbench.startupEditor": "none",
+    "explorer.autoReveal": false,
+
+    // C# & .NET Related Tweaks
+    "dotnet.server.useOmnisharp": true,
+    "omnisharp.useModernNet": true,
+    "omnisharp.enableRoslynAnalyzers": false,
+    "omnisharp.enableEditorConfigSupport": false,
+    "omnisharp.enableImportCompletion": false,
+
+    // Disable heavy features when not needed
+    "breadcrumbs.enabled": false,
+    "problems.showCurrentInStatus": false
+}
